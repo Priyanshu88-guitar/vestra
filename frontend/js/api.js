@@ -90,6 +90,20 @@ async function apiFetch(endpoint, options = {}) {
  * @param {string} password
  * @returns {Object} { token, user }
  */
+async function apiSignup(name, email, password) {
+  return apiFetch('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password }),
+  });
+}
+
+/**
+ * POST /api/auth/login
+ * Authenticate an existing user.
+ * @param {string} email
+ * @param {string} password
+ * @returns {Object} { token, user }
+ */
 // login example
 async function login(email, password) {
   const res = await fetch(`${API_BASE}/api/auth/login`, {
@@ -101,21 +115,6 @@ async function login(email, password) {
   const data = await res.json();
   return data;
 }
-
-/**
- * POST /api/auth/login
- * Authenticate an existing user.
- * @param {string} email
- * @param {string} password
- * @returns {Object} { token, user }
- */
-async function apiLogin(email, password) {
-  return apiFetch('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  });
-}
-
 /* ═══════════════════════════════════════════════════════
    WARDROBE API
    ═══════════════════════════════════════════════════════ */
