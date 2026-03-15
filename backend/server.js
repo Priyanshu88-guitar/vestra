@@ -47,12 +47,17 @@ const allowedOrigins = [
 ].filter(Boolean);
 
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:5000",
-    "https://vestra-s5i0.onrender.com"
-  ],
-  credentials: true
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, Postman, mobile apps)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+    }
+  },
+  credentials:      true,
+  methods:          ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders:   ['Content-Type', 'Authorization'],
 }));
 
 /* ═══════════════════════════════════════════════════════
