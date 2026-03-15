@@ -47,17 +47,12 @@ const allowedOrigins = [
 ].filter(Boolean);
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (curl, Postman, mobile apps)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS policy: Origin ${origin} not allowed`));
-    }
-  },
-  credentials:      true,
-  methods:          ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders:   ['Content-Type', 'Authorization'],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://vestra-s5i0.onrender.com"
+  ],
+  credentials: true
 }));
 
 /* ═══════════════════════════════════════════════════════
@@ -176,7 +171,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 
 /* ═══════════════════════════════════════════════════════
    MONGODB CONNECTION + SERVER START
