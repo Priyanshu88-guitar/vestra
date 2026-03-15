@@ -55,11 +55,19 @@ app.use(cors({
       callback(new Error(`CORS policy: Origin ${origin} not allowed`));
     }
   },
+  
   credentials:      true,
   methods:          ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders:   ['Content-Type', 'Authorization'],
 }));
-
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://vestra-s5i0.onrender.com"
+  ],
+  credentials: true
+}));
 /* ═══════════════════════════════════════════════════════
    RATE LIMITING
    ═══════════════════════════════════════════════════════ */
