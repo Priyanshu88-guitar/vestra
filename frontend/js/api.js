@@ -8,7 +8,7 @@
 // ─── BASE URL ───
 // In development: http://localhost:5000
 // In production: change to your deployed backend URL
-const API_BASE = window.API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE = "https://vestra-api-hp1c.onrender.com";
 
 // ─── AUTH TOKEN MANAGEMENT ───
 const TokenStore = {
