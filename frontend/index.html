@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vestra – Digital Wardrobe</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       LOADING OVERLAY
+  ═══════════════════════════════════════════════ -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <p class="loading-text">Vestra</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+  ═══════════════════════════════════════════════ -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       AUTH SECTION (Login / Signup)
+  ═══════════════════════════════════════════════ -->
+  <div id="authSection" class="auth-section">
+    <!-- Auth Background Decoration -->
+    <div class="auth-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <div class="auth-container">
+      <!-- Brand Header -->
+      <div class="auth-brand">
+        <div class="brand-icon">
+          <i class="fas fa-tshirt"></i>
+        </div>
+        <h1 class="brand-name">Vestra</h1>
+        <p class="brand-tagline">Your Digital Wardrobe, Reimagined</p>
+      </div>
+
+      <!-- Auth Card -->
+      <div class="auth-card">
+        <!-- Tab Switcher -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">
+            Sign In
+          </button>
+          <button class="auth-tab" data-tab="signup" onclick="switchAuthTab('signup')">
+            Sign Up
+          </button>
+          <div class="tab-slider"></div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-envelope"></i> Email Address
+            </label>
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-input"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-lock"></i> Password
+            </label>
+            <div class="input-with-icon">
+              <input
+                type="password"
+                id="loginPassword"
+                class="form-input"
+                placeholder="Your password"
+                required
+                autocomplete="current-password"
+              />
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', this)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+            <span class="btn-text">Sign In</span>
+            <i class="fas fa-arrow-right btn-icon"></i>
+          </button>
+          <p class="auth-switch-text">
+            Don't have an account?
+            <a href="#" onclick="switchAuthTab('signup')">Create one free</a>
+          </p>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-user"></i> Full Name
+            </label>
+            <input
+              type="text"
+              id="signupName"
+              class="form-input"
+              placeholder="John Doe"
+              required
+              autocomplete="name"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-envelope"></i> Email Address
+            </label>
+            <input
+              type="email"
+              id="signupEmail"
+              class="form-input"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-lock"></i> Password
+            </label>
+            <div class="input-with-icon">
+              <input
+                type="password"
+                id="signupPassword"
+                class="form-input"
+                placeholder="Min. 6 characters"
+                required
+                minlength="6"
+                autocomplete="new-password"
+              />
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility('signupPassword', this)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="signupBtn">
+            <span class="btn-text">Create Account</span>
+            <i class="fas fa-arrow-right btn-icon"></i>
+          </button>
+          <p class="auth-switch-text">
+            Already have an account?
+            <a href="#" onclick="switchAuthTab('login')">Sign in</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN APP (shown after login)
+  ═══════════════════════════════════════════════ -->
+  <div id="appSection" class="app-section hidden">
+
+    <!-- ─── SIDEBAR / NAV ─── -->
+    <aside id="sidebar" class="sidebar">
+      <!-- Sidebar Brand -->
+      <div class="sidebar-brand">
+        <div class="brand-icon-sm">
+          <i class="fas fa-tshirt"></i>
+        </div>
+        <span class="sidebar-brand-name">Vestra</span>
+      </div>
+
+      <!-- User Profile Badge -->
+      <div class="sidebar-profile">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-info">
+          <span class="profile-name" id="sidebarUserName">Loading...</span>
+          <span class="profile-status">
+            <span class="status-dot"></span> Active
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" data-section="wardrobe" onclick="switchSection('wardrobe', this)">
+          <i class="fas fa-th-large nav-icon"></i>
+          <span>My Wardrobe</span>
+          <span class="nav-badge" id="wardrobeBadge">0</span>
+        </a>
+        <a href="#" class="nav-link" data-section="add-item" onclick="switchSection('add-item', this)">
+          <i class="fas fa-plus-circle nav-icon"></i>
+          <span>Add Clothing</span>
+        </a>
+        <a href="#" class="nav-link" data-section="outfits" onclick="switchSection('outfits', this)">
+          <i class="fas fa-magic nav-icon"></i>
+          <span>Outfit Ideas</span>
+          <span class="nav-tag">AI</span>
+        </a>
+        <a href="#" class="nav-link" data-section="stats" onclick="switchSection('stats', this)">
+          <i class="fas fa-chart-pie nav-icon"></i>
+          <span>Statistics</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="handleLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- ─── MAIN CONTENT AREA ─── -->
+    <main class="main-content">
+
+      <!-- TOP HEADER BAR -->
+      <header class="top-header">
+        <button class="menu-toggle" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-title" id="headerTitle">My Wardrobe</div>
+        <div class="header-actions">
+          <button class="header-btn" onclick="switchSection('add-item', null)" title="Add clothing">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="user-avatar-btn" id="userAvatarBtn">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- ─────────────────────────────────────
+           SECTION: MY WARDROBE (Gallery)
+      ───────────────────────────────────── -->
+      <section id="sectionWardrobe" class="content-section active">
+        <!-- Search & Filter Bar -->
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search clothes..."
+              oninput="filterWardrobe()"
+            />
+          </div>
+          <div class="filter-chips" id="filterChips">
+            <button class="chip active" data-filter="all" onclick="setCategoryFilter('all', this)">All</button>
+            <button class="chip" data-filter="shirt" onclick="setCategoryFilter('shirt', this)">Shirts</button>
+            <button class="chip" data-filter="pants" onclick="setCategoryFilter('pants', this)">Pants</button>
+            <button class="chip" data-filter="jacket" onclick="setCategoryFilter('jacket', this)">Jackets</button>
+            <button class="chip" data-filter="shoes" onclick="setCategoryFilter('shoes', this)">Shoes</button>
+            <button class="chip" data-filter="dress" onclick="setCategoryFilter('dress', this)">Dresses</button>
+            <button class="chip" data-filter="accessory" onclick="setCategoryFilter('accessory', this)">Accessories</button>
+            <button class="chip" data-filter="other" onclick="setCategoryFilter('other', this)">Other</button>
+          </div>
+          <div class="color-filter">
+            <select id="colorFilter" class="form-select" onchange="filterWardrobe()">
+              <option value="">All Colors</option>
+              <option value="black">Black</option>
+              <option value="white">White</option>
+              <option value="gray">Gray</option>
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="yellow">Yellow</option>
+              <option value="pink">Pink</option>
+              <option value="purple">Purple</option>
+              <option value="brown">Brown</option>
+              <option value="orange">Orange</option>
+              <option value="beige">Beige</option>
+              <option value="multicolor">Multicolor</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="wardrobe-stats" id="wardrobeStats">
+          <div class="stat-pill">
+            <i class="fas fa-tshirt"></i>
+            <span id="statTotal">0</span> items
+          </div>
+          <div class="stat-pill">
+            <i class="fas fa-filter"></i>
+            <span id="statFiltered">0</span> shown
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyWardrobe" class="empty-state hidden">
+          <div class="empty-icon">
+            <i class="fas fa-tshirt"></i>
+          </div>
+          <h3>Your wardrobe is empty</h3>
+          <p>Start by adding your first clothing item!</p>
+          <button class="btn btn-primary" onclick="switchSection('add-item', null)">
+            <i class="fas fa-plus"></i> Add First Item
+          </button>
+        </div>
+
+        <!-- Clothing Grid -->
+        <div id="clothingGrid" class="clothing-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Loading Skeleton -->
+        <div id="gridSkeleton" class="clothing-grid hidden">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────
+           SECTION: ADD CLOTHING ITEM
+      ───────────────────────────────────── -->
+      <section id="sectionAddItem" class="content-section">
+        <div class="add-item-container">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-plus-circle"></i> Add Clothing Item
+            </h2>
+            <p class="section-subtitle">Capture or upload a photo and describe your item</p>
+          </div>
+
+          <form id="addClothingForm" class="add-clothing-form" onsubmit="handleAddClothing(event)">
+            <div class="form-layout">
+
+              <!-- LEFT: Image Capture -->
+              <div class="image-section">
+                <div class="image-capture-card">
+                  <h3 class="card-label">
+                    <i class="fas fa-camera"></i> Item Photo
+                  </h3>
+
+                  <!-- Preview Area -->
+                  <div class="image-preview-area" id="imagePreviewArea">
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                      <i class="fas fa-image placeholder-icon"></i>
+                      <p>No image selected</p>
+                    </div>
+                    <img id="imagePreview" class="preview-img hidden" alt="Preview" />
+                    <!-- Video for camera stream -->
+                    <video id="cameraVideo" class="camera-video hidden" autoplay playsinline muted></video>
+                    <!-- Capture flash effect -->
+                    <div id="captureFlash" class="capture-flash hidden"></div>
+                  </div>
+
+                  <!-- Camera / Upload Controls -->
+                  <div class="image-controls">
+                    <button type="button" class="btn btn-camera" id="openCameraBtn" onclick="openCamera()">
+                      <i class="fas fa-camera"></i> Open Camera
+                    </button>
+                    <button type="button" class="btn btn-camera hidden" id="captureBtn" onclick="capturePhoto()">
+                      <i class="fas fa-circle-dot"></i> Capture
+                    </button>
+                    <button type="button" class="btn btn-camera hidden" id="stopCameraBtn" onclick="stopCamera()">
+                      <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <label class="btn btn-upload" for="fileInput">
+                      <i class="fas fa-upload"></i> Upload Photo
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event)" />
+                    <button type="button" class="btn btn-outline-sm hidden" id="clearImageBtn" onclick="clearImage()">
+                      <i class="fas fa-times"></i> Clear
+                    </button>
+                  </div>
+
+                  <!-- Camera switch (front/back) -->
+                  <div id="cameraSwitchRow" class="camera-switch-row hidden">
+                    <button type="button" class="btn-camera-switch" onclick="switchCamera()">
+                      <i class="fas fa-sync-alt"></i> Switch Camera
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT: Item Details Form -->
+              <div class="details-section">
+                <div class="details-card">
+                  <h3 class="card-label">
+                    <i class="fas fa-tag"></i> Item Details
+                  </h3>
+
+                  <div class="form-group">
+                    <label class="form-label">Item Name <span class="required">*</span></label>
+                    <input
+                      type="text"
+                      id="itemName"
+                      class="form-input"
+                      placeholder="e.g. Blue Denim Jacket"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Category <span class="required">*</span></label>
+                      <select id="itemCategory" class="form-select" required>
+                        <option value="">Select category</option>
+                        <option value="shirt">👕 Shirt / T-Shirt</option>
+                        <option value="pants">👖 Pants / Jeans</option>
+                        <option value="jacket">🧥 Jacket / Coat</option>
+                        <option value="dress">👗 Dress / Skirt</option>
+                        <option value="shoes">👟 Shoes</option>
+                        <option value="accessory">⌚ Accessory</option>
+                        <option value="sweater">🧶 Sweater / Hoodie</option>
+                        <option value="other">📦 Other</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Color <span class="required">*</span></label>
+                      <div class="color-picker-row">
+                        <select id="itemColor" class="form-select" required onchange="updateColorDot()">
+                          <option value="">Select color</option>
+                          <option value="black">⚫ Black</option>
+                          <option value="white">⚪ White</option>
+                          <option value="gray">🩶 Gray</option>
+                          <option value="red">🔴 Red</option>
+                          <option value="blue">🔵 Blue</option>
+                          <option value="green">🟢 Green</option>
+                          <option value="yellow">🟡 Yellow</option>
+                          <option value="pink">🩷 Pink</option>
+                          <option value="purple">🟣 Purple</option>
+                          <option value="brown">🟤 Brown</option>
+                          <option value="orange">🟠 Orange</option>
+                          <option value="beige">🏵️ Beige</option>
+                          <option value="multicolor">🌈 Multicolor</option>
+                        </select>
+                        <div class="color-dot" id="colorDot"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Season</label>
+                      <select id="itemSeason" class="form-select">
+                        <option value="all">All Seasons</option>
+                        <option value="spring">🌸 Spring</option>
+                        <option value="summer">☀️ Summer</option>
+                        <option value="autumn">🍂 Autumn</option>
+                        <option value="winter">❄️ Winter</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Occasion</label>
+                      <select id="itemOccasion" class="form-select">
+                        <option value="casual">😊 Casual</option>
+                        <option value="formal">👔 Formal</option>
+                        <option value="sport">🏃 Sport</option>
+                        <option value="party">🎉 Party</option>
+                        <option value="work">💼 Work</option>
+                        <option value="beach">🏖️ Beach</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Brand / Notes</label>
+                    <textarea
+                      id="itemNotes"
+                      class="form-textarea"
+                      placeholder="e.g. Levi's 501, bought in Paris..."
+                      rows="3"
+                    ></textarea>
+                  </div>
+
+                  <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="resetAddForm()">
+                      <i class="fas fa-undo"></i> Reset
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitClothingBtn">
+                      <i class="fas fa-plus"></i>
+                      <span class="btn-text">Add to Wardrobe</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────
+           SECTION: OUTFIT SUGGESTIONS
+      ───────────────────────────────────── -->
+      <section id="sectionOutfits" class="content-section">
+        <div class="outfits-container">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-magic"></i> Outfit Suggestions
+            </h2>
+            <p class="section-subtitle">Smart outfit combinations from your wardrobe</p>
+          </div>
+
+          <!-- Filter Options -->
+          <div class="outfit-filters">
+            <div class="filter-group">
+              <label class="form-label">Occasion</label>
+              <select id="outfitOccasion" class="form-select" onchange="generateOutfits()">
+                <option value="">Any Occasion</option>
+                <option value="casual">😊 Casual</option>
+                <option value="formal">👔 Formal</option>
+                <option value="sport">🏃 Sport</option>
+                <option value="party">🎉 Party</option>
+                <option value="work">💼 Work</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="form-label">Season</label>
+              <select id="outfitSeason" class="form-select" onchange="generateOutfits()">
+                <option value="">Any Season</option>
+                <option value="spring">🌸 Spring</option>
+                <option value="summer">☀️ Summer</option>
+                <option value="autumn">🍂 Autumn</option>
+                <option value="winter">❄️ Winter</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="generateOutfits()">
+              <i class="fas fa-random"></i> Generate Outfits
+            </button>
+          </div>
+
+          <!-- Outfit Results -->
+          <div id="outfitResults" class="outfit-results">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Empty Outfit State -->
+          <div id="emptyOutfits" class="empty-state hidden">
+            <div class="empty-icon">
+              <i class="fas fa-magic"></i>
+            </div>
+            <h3>Not enough items</h3>
+            <p>Add at least 3 clothing items to generate outfit suggestions.</p>
+            <button class="btn btn-primary" onclick="switchSection('add-item', null)">
+              <i class="fas fa-plus"></i> Add Clothing
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────
+           SECTION: STATISTICS
+      ───────────────────────────────────── -->
+      <section id="sectionStats" class="content-section">
+        <div class="stats-container">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i class="fas fa-chart-pie"></i> Wardrobe Statistics
+            </h2>
+            <p class="section-subtitle">Insights into your wardrobe composition</p>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="kpi-grid" id="kpiGrid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <i class="fas fa-tshirt"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-value" id="kpiTotal">0</span>
+                <span class="kpi-label">Total Items</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <i class="fas fa-layer-group"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-value" id="kpiCategories">0</span>
+                <span class="kpi-label">Categories</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <i class="fas fa-palette"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-value" id="kpiColors">0</span>
+                <span class="kpi-label">Colors</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <i class="fas fa-magic"></i>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-value" id="kpiOutfits">0</span>
+                <span class="kpi-label">Possible Outfits</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts / Breakdown -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <h3 class="chart-title">By Category</h3>
+              <div id="categoryChart" class="bar-chart-container">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3 class="chart-title">By Color</h3>
+              <div id="colorChart" class="color-chart-container">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3 class="chart-title">By Season</h3>
+              <div id="seasonChart" class="bar-chart-container">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3 class="chart-title">By Occasion</h3>
+              <div id="occasionChart" class="bar-chart-container">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ITEM DETAIL MODAL
+  ═══════════════════════════════════════════════ -->
+  <div id="itemModal" class="modal-overlay hidden" onclick="closeItemModal(event)">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeItemModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-content" id="modalContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       DELETE CONFIRM MODAL
+  ═══════════════════════════════════════════════ -->
+  <div id="deleteModal" class="modal-overlay hidden" onclick="closeDeleteModal(event)">
+    <div class="modal-container modal-sm">
+      <div class="modal-content">
+        <div class="delete-confirm-icon">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+        <h3>Delete Item?</h3>
+        <p>This will permanently remove this item from your wardrobe.</p>
+        <div class="delete-actions">
+          <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+          <button class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       JAVASCRIPT MODULES
+  ═══════════════════════════════════════════════ -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/wardrobe.js"></script>
+  <script src="js/outfits.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

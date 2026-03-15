@@ -1,0 +1,13 @@
+# This directory stores user-uploaded clothing images.
+# 
+# Structure:
+#   uploads/
+#   └── {userId}/
+#       └── opt_{filename}.webp   (optimised by Sharp)
+#
+# - Files are served by Express at: GET /uploads/{userId}/{filename}
+# - Max file size: 10MB (enforced by Multer)
+# - Images are auto-resized to max 800×1000px and converted to WebP
+# - This directory is listed in .gitignore — do NOT commit images
+#
+# Note: For production, consider using cloud storage (AWS S3, Cloudinary, etc.)
