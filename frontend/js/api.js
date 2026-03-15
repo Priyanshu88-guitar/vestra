@@ -90,11 +90,16 @@ async function apiFetch(endpoint, options = {}) {
  * @param {string} password
  * @returns {Object} { token, user }
  */
-async function apiSignup(name, email, password) {
-  return apiFetch('/auth/signup', {
+// login example
+async function login(email, password) {
+  const res = await fetch(`${API_BASE}/api/auth/login`, {
     method: 'POST',
-    body: JSON.stringify({ name, email, password }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
   });
+
+  const data = await res.json();
+  return data;
 }
 
 /**
