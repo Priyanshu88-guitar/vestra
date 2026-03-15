@@ -42,6 +42,7 @@ const allowedOrigins = [
   'http://localhost:5500',
   'http://127.0.0.1:5500',
   'http://localhost:8080',
+  'https://vestra-s5i0.onrender.com',
   // Add your production frontend URL here:
   process.env.FRONTEND_URL,
 ].filter(Boolean);
